@@ -51,3 +51,29 @@ export const getArticles = async (req, res) => {
     });
   }
 };
+
+// Controller to get an article by ID
+export const getArticlesById = async (req, res) => {
+  try {
+    const id = req.params.id;
+    // Find the article by ID
+    const article = await Article.findById(id);
+    // Check if the article exists
+    if (!article) {
+      return res.status(404).json({ success: false, message: "Article not found" });
+    }
+    // Return the article
+    res.status(200).json({
+      success: true,
+      article: article,
+      message: "Article retrieved successfully",
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: error.message,
+      message: "Internal server error",
+    });
+  }
+};
